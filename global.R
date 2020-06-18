@@ -3,8 +3,6 @@ options(rgl.useNULL = TRUE, width = 1200, spinner.type = 1, spinner.color = "#1D
 library(URD)
 library(shiny)
 library(shinycssloaders)
-library(rgl)
-library(rglwidget)
 library(ggplot2)
 
 urd.version <<- packageVersion("URD")
