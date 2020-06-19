@@ -1,4 +1,9 @@
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(shiny, shinycssloaders, devtools, install = TRUE)
 
-if (!require("URD")) install_github(repo = "farrellja/URD", ref = "debug")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+if (!require("destiny)) BiocManager::install("destiny")
+
+if (!require("URD")) install_github(repo = "farrellja/URD")
