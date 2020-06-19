@@ -16,14 +16,13 @@ shinyServer(
             inputId = "feature",
             choices = getFeatures())
     })
+    
+    observeEvent(input$reset.figure.size, {
+        updateSliderInput(session, "plot.width", value = 1000)
+        updateSliderInput(session, "plot.height", value = 600)
+    })
 
     output$tree2D <- renderPlot({
-        validate(
-            need(
-                input$path != "<select>",
-                "Please select file to be laoded."
-            )
-        )
         validate(
             need(
                 length(input$feature) < 3,
@@ -43,6 +42,20 @@ shinyServer(
             )
 
         }
+    })
+    
+    output$tree2D.ui <- renderUI({
+        validate(
+            need(
+                input$path != "<select>",
+                "Please select file to be laoded."
+            )
+        )
+        plotOutput(
+            "tree2D",
+            height = input$plot.height,
+            width = input$plot.width
+        )
     })
 
     output$downloadTree2D <- downloadHandler(

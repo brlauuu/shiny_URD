@@ -4,19 +4,35 @@ navbarPage("Shiny URD",
         tabPanel("Tree",
             sidebarLayout(
               sidebarPanel(
-                helpText(paste0("URD v", urd.version)),
-                selectInput(
+              	helpText(paste0("URD v", urd.version)),
+              	tags$div(class="header", checked=NA,
+              			 tags$h3("Select files and features:")
+              	),
+              	selectInput(
                   "path",
-                  "Select file",
+                  "File",
                   choices=path.to.load),
                 selectInput(
                   "feature",
-                  "Select feature(s)",
+                  "Feature(s)",
                   choices=features,
                   multiple = T),
+                tags$div(class="header", checked=NA,
+                		 tags$h3("Plot size in pixels:")
+                ),
+                sliderInput("plot.width", "Width:",
+                			min = 0, max = 4000,
+                			value = 1000),
+                sliderInput("plot.height", "Height:",
+                			min = 0, max = 4000,
+                			value = 600),
+                actionButton("reset.figure.size", "reset"),
+                tags$div(class="header", checked=NA,
+                		 tags$h3("Download:")
+                ),
                 selectInput(
                   "format",
-                  "Downlaod format",
+                  "Format",
                   choices=device),
                 selectInput(
                   "unit",
@@ -31,7 +47,7 @@ navbarPage("Shiny URD",
                 width = "3"
               ),
               mainPanel(
-                withSpinner(plotOutput("tree2D"))
+                withSpinner(uiOutput("tree2D.ui"))
               )
             )
         ),
