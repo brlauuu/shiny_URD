@@ -9,7 +9,7 @@ urd.version <<- packageVersion("URD")
 
 f <- list.files("data")
 path.to.load <- c("<select>", f[grepl(".*rds", f)])
-features <- c("<select>")
+features <<- c("<select>")
 
 units <- c("mm", "cm", "in")
 device <- c("png", "eps", "ps", "tex", "pdf", "jpeg", "tiff", "bmp", "svg")
@@ -21,13 +21,14 @@ loadObject <- function(path) {
 	print(paste0("Loaded URD object from path: ", "data/", path))
 }
 
-listFeatures <- function() {
+listFeatures <- function(session) {
 	tryCatch({
 		return(
 			c(
 				"pseudotime",
 				colnames(object@meta),
-				rownames(object@logupx.data)
+				rownames(object@logupx.data),
+				colnames(object@gene.sig.z)
 			)
 		)
 	}, error=function(cond) {

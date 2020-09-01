@@ -17,6 +17,8 @@ navbarPage("Shiny URD",
                   "Feature(s)",
                   choices=features,
                   multiple = T),
+                actionButton("previous.feature", "Previous feature"),
+                actionButton("next.feature", "Next feature"),
                 tags$div(class="header", checked=NA,
                 		 tags$h3("Plot size in pixels:")
                 ),
@@ -26,7 +28,7 @@ navbarPage("Shiny URD",
                 sliderInput("plot.height", "Height:",
                 			min = 0, max = 4000,
                 			value = 600),
-                actionButton("reset.figure.size", "reset"),
+                actionButton("reset.figure.size", "Reset"),
                 tags$div(class="header", checked=NA,
                 		 tags$h3("Download:")
                 ),
@@ -47,7 +49,7 @@ navbarPage("Shiny URD",
                 width = "3"
               ),
               mainPanel(
-                withSpinner(uiOutput("tree2D.ui"))
+              	withSpinner(uiOutput("tree2D.ui"))
               )
             )
         ),

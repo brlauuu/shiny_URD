@@ -1,27 +1,72 @@
 shinyServer(
     function(input, output, session) {
 
-    getFeatures = reactive({
-        return(listFeatures())
-    })
-
     observe({
         print(paste0("Selected ", input$path))
         if (input$path == "<select>") {
             return()
         }
-        loadObject(input$path)
+        features <<- c("<select>")
         updateSelectInput(
             session = session,
             inputId = "feature",
-            choices = getFeatures())
+            choices = features,
+            selected = NULL)
+        loadObject(input$path)
+        features <<- listFeatures(session)
+        updateSelectInput(
+            session = session,
+            inputId = "feature",
+            choices = features)
     })
     
     observeEvent(input$reset.figure.size, {
         updateSliderInput(session, "plot.width", value = 1000)
         updateSliderInput(session, "plot.height", value = 600)
     })
+    
+    observeEvent(input$previous.feature, {
+        if (length(input$feature) != 1) {
+            showModal(
+                modalDialog(
+                    title = "For usage of this button, only one feature can be selected."
+                )
+            )
+            return()
+        }
+        current <- which(features == input$feature)
+        if (current < 0 || current > length(features)) {
+            showModal(
+                modalDialog(
+                    title = "Selection out of range."
+                )
+            )
+            return()
+        }
+        updateSelectInput(session, "feature", selected = features[current - 1])
+    })
 
+    observeEvent(input$next.feature, {
+        if (length(input$feature) != 1) {
+            showModal(
+                modalDialog(
+                    title = "For usage of this button, only one feature can be selected."
+                )
+            )
+            return()
+        }
+        current <- which(features == input$feature)
+        if (current < 0 || current > length(features)) {
+            showModal(
+                modalDialog(
+                    title = "Selection out of range."
+                )
+            )
+            return()
+        }
+        updateSelectInput(session, "feature", selected = features[current + 1])
+    })
+    
     output$tree2D <- renderPlot({
         validate(
             need(
