@@ -19,6 +19,7 @@ navbarPage("Shiny URD",
                   multiple = T),
                 actionButton("previous.feature", "Previous feature"),
                 actionButton("next.feature", "Next feature"),
+                uiOutput("mara.zfin.link"),
                 tags$div(class="header", checked=NA,
                 		 tags$h3("Plot size in pixels:")
                 ),

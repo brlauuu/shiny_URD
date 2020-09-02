@@ -66,7 +66,31 @@ shinyServer(
         }
         updateSelectInput(session, "feature", selected = features[current + 1])
     })
-    
+
+    output$mara.zfin.link <- renderUI({
+        label <- ""
+        url <- ""
+        if (length(input$feature) == 1) {
+            if (startsWith(input$feature, "MOTIF")) {
+                motif <- gsub("^.*?_","", input$feature)
+                url <- paste0(
+                    "https://ismara.unibas.ch/ISMARA/scratch/zf_whole_tree/ismara_report/pages/",
+                    motif,
+                    ".html"
+                )
+                label <- paste0("More details at ISMARA: ", motif)
+            } else {
+                url <- paste0(
+                    "https://zfin.org/search?category=&q=",
+                    input$feature
+                )
+                label <- paste0("More details at Zfin: ", input$feature)
+            }
+        }
+        url.path <- a(label, href=url, target="_blank")
+        return(tagList("", url.path))
+    })
+
     output$tree2D <- renderPlot({
         validate(
             need(
