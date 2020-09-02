@@ -4,6 +4,7 @@ library(URD)
 library(shiny)
 library(shinycssloaders)
 library(ggplot2)
+library(gridExtra)
 
 urd.version <<- packageVersion("URD")
 

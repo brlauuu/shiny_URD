@@ -92,24 +92,33 @@ shinyServer(
     })
 
     output$tree2D <- renderPlot({
-        validate(
-            need(
-                length(input$feature) < 3,
-                "Select at least up to 2 features to be plotted on the tree."
-            )
-        )
-        if (length(input$feature) < 2) {
+        if (length(input$feature) == 0) {
             plotTree(
                 object,
-                if (length(input$feature) == 1) input$feature else "segment"
+                "segment"
             )
-        } else {
+        } else if (length(input$feature) == 1) {
+            plotTree(
+                object,
+                input$feature
+            )
+        } else if  (length(input$feature) == 2) {
             plotTreeDual(
                 object,
                 input$feature[[1]],
                 input$feature[[2]]
             )
 
+        } else {
+            p <- list()
+            for(feat in input$feature){
+                p[[which(feat == input$feature)]] <- plotTree(
+                    object,
+                    feat
+                )
+            }
+            plots <- grid.arrange(grobs=p)
+            print(plots)
         }
     })
     
@@ -142,7 +151,7 @@ shinyServer(
                     units = input$unit,
                     device = input$format
                 )
-            } else {
+            } else if (length(input$feature) == 2) {
                 ggsave(
                     file,
                     plot = plotTreeDual(
@@ -150,6 +159,23 @@ shinyServer(
                         input$feature[[1]],
                         input$feature[[2]]
                     ),
+                    width = as.double(input$width),
+                    height = as.double(input$height),
+                    units = input$unit,
+                    device = input$format
+                )
+            } else {
+                p <- list()
+                for(feat in input$feature){
+                    p[[which(feat == input$feature)]] <- plotTree(
+                        object,
+                        feat
+                    )
+                }
+                plots <- grid.arrange(grobs=p)
+                ggsave(
+                    file,
+                    plot = grid.arrange(grobs=p),
                     width = as.double(input$width),
                     height = as.double(input$height),
                     units = input$unit,
