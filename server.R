@@ -74,7 +74,7 @@ shinyServer(
             if (startsWith(input$feature, "MOTIF")) {
                 motif <- gsub("^.*?_","", input$feature)
                 url <- paste0(
-                    "https://ismara.unibas.ch/ISMARA/scratch/zf_whole_tree/ismara_report/pages/",
+                    "https://ismara.unibas.ch/ISMARA/scratch/jeff_yiqun_data_all_scMARA/report/pages/",
                     motif,
                     ".html"
                 )
@@ -98,10 +98,18 @@ shinyServer(
                 "segment"
             )
         } else if (length(input$feature) == 1) {
-            plotTree(
-                object,
-                input$feature
-            )
+            if (startsWith(input$feature, "MOTIF")) {
+                plotTree(
+                    object,
+                    input$feature,
+                    symmetric.color.scale=T
+                )
+            } else {
+                plotTree(
+                    object,
+                    input$feature,
+                )                
+            }
         } else if  (length(input$feature) == 2) {
             plotTreeDual(
                 object,
