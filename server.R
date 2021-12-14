@@ -19,12 +19,12 @@ shinyServer(
             inputId = "feature",
             choices = features)
     })
-    
+
     observeEvent(input$reset.figure.size, {
         updateSliderInput(session, "plot.width", value = 1000)
         updateSliderInput(session, "plot.height", value = 600)
     })
-    
+
     observeEvent(input$previous.feature, {
         if (length(input$feature) != 1) {
             showModal(
@@ -106,13 +106,14 @@ shinyServer(
                     object,
                     input$feature,
                     symmetric.color.scale=T,
-                    color.limits = c(-color.bar.limiit, color.bar.limiit)
+                    color.limits = c(-color.bar.limiit, color.bar.limiit),
+                    continuous.colors = c("#0000FF", "#0000FF", "#FFFFFF", "#FF0000", "#FF0000"),
                 )
             } else {
                 plotTree(
                     object,
                     input$feature,
-                )                
+                )
             }
         } else if  (length(input$feature) == 2) {
             plotTreeDual(
@@ -133,7 +134,7 @@ shinyServer(
             print(plots)
         }
     })
-    
+
     output$tree2D.ui <- renderUI({
         validate(
             need(
