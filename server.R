@@ -99,10 +99,14 @@ shinyServer(
             )
         } else if (length(input$feature) == 1) {
             if (startsWith(input$feature, "MOTIF")) {
+                color.bar.limiit <- max(
+                    abs(min(object@gene.sig.z[[input$feature]])),
+                    max(object@gene.sig.z[[input$feature]]))
                 plotTree(
                     object,
                     input$feature,
-                    symmetric.color.scale=T
+                    symmetric.color.scale=T,
+                    color.limits = c(-color.bar.limiit, color.bar.limiit)
                 )
             } else {
                 plotTree(
